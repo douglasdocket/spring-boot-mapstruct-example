@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MapStruct Example</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div>
+    <h2>Cadastro de empresa</h2>
+    <form th:object="${novaEmpresa}" method="post">
+        <div>
+            <label>
+                Razão social
+                <input type="text" th:field="*{razaoSocial}">
+            </label>
+        </div>
+        <div>
+            <label>
+                Nome fantasia
+                <input type="text" th:field="*{nomeFantasia}">
+            </label>
+        </div>
+        <div>
+            <label>
+                Data fundação
+                <input name="dataFundacao" th:value="*{#dates.format(dataFundacao, 'dd/MM/yyyy')}">
+            </label>
+        </div>
+        <th:block th:each="funcionario : *{funcionarios}">
+            <div>
+                <h3 th:text="|Funcionario #${funcionarioStat.count}|"></h3>
+                <div>
+                    <label>
+                        Nome
+                        <input th:field="*{funcionarios[__${funcionarioStat.index}__].nome}">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Apelido
+                        <input th:field="*{funcionarios[__${funcionarioStat.index}__].apelido}">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Data nascimento
+                        <input th:field="*{funcionarios[__${funcionarioStat.index}__].dataNascimento}">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Sexo
+                        <select th:field="*{funcionarios[__${funcionarioStat.index}__].sexo}">
+                            <option th:each="sexo : ${sexos}" th:value="${sexo.name()}" th:text="${sexo.nome}"></option>
+                        </select>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Tipo pessoa
+                        <select th:field="*{funcionarios[__${funcionarioStat.index}__].tipo}">
+                            <option th:each="tipo : ${tipos}" th:value="${tipo.name()}" th:text="${tipo.nome}"></option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+        </th:block>
+        <div>
+            <button th:formaction="@{/empresa(adicionarFuncionario)}" formmethod="post">Adicionar funcionario</button>
+        </div>
+        <div>
+            <button th:formaction="@{/empresa}" formmethod="post">Cadastrar empresa</button>
+        </div>
+    </form>
+</div>
+<div>
+    <h2>Empresas cadastradas</h2>
+    <th:block th:if="${#lists.isEmpty(empresas)}">
+        <span>Nenhuma empresa cadastrada.</span>
+    </th:block>
+    <th:block th:unless="${#lists.isEmpty(empresas)}">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Razão social</th>
+                    <th>Nome fantasia</th>
+                    <th>Data fundação</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <th:block th:each="empresa : ${empresas}" th:object="${empresa}">
+                    <tr>
+                        <td th:text="*{id}"></td>
+                        <td th:text="*{razaoSocial}"></td>
+                        <td th:text="*{nomeFantasia}"></td>
+                        <td th:text="*{#dates.format(dataFundacao, 'dd/MM/yyyy')}"></td>
+                        <td>
+                            <a th:href="@{/empresa(e=*{uuid})}">Detalhar</a>
+                        </td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+    </th:block>
+</div>
+<div>
+    <h2>Detalhe empresa</h2>
+    <th:block th:unless="${empresa}">
+        <span>Nenhuma empresa selecionada.</span>
+    </th:block>
+    <th:block th:if="${empresa}" th:object="${empresa}">
+        <div>
+            <b>Razão social: </b>
+            <span th:text="*{razaoSocial}"></span>
+        </div>
+        <div>
+            <b>Nome fantasia: </b>
+            <span th:text="*{nomeFantasia}"></span>
+        </div>
+        <div>
+            <b>Data fundação</b>
+            <span th:text="*{#dates.format(dataFundacao, 'dd/MM/yyyy')}"></span>
+        </div>
+        <h3>Funcionários</h3>
+        <th:block th:if="*{#lists.isEmpty(funcionarios)}">
+            <span>Nenhum funcionário cadastrado</span>
+        </th:block>
+        <th:block th:each="funcionario : *{funcionarios}" th:object="${funcionario}">
+            <div>
+                <b>Nome: </b>
+                <span th:text="*{nome}"></span>
+            </div>
+            <div>
+                <b>Apelido: </b>
+                <span th:text="*{apelido}"></span>
+            </div>
+            <div>
+                <b>Data nascimento: </b>
+                <span th:text="*{#dates.format(dataNascimento, 'dd/MM/yyyy')}"></span>
+            </div>
+            <div>
+                <b>Sexo: </b>
+                <span th:text="*{sexo.nome}"></span>
+            </div>
+            <div>
+                <b>Tipo: </b>
+                <span th:text="*{tipo.nome}"></span>
+            </div>
+        </th:block>
+    </th:block>
+</div>
+</body>
+</html>
