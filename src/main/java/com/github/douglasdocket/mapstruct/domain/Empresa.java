@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "EMPRESA")
@@ -24,6 +25,9 @@ public class Empresa {
 	@GeneratedValue(generator = "empresaSequenceGenerator")
 	@Column(name = "ID")
 	private Long id;
+
+	@Column(name = "UUID")
+	private String uuid = UUID.randomUUID().toString();
 
 	@Column(name = "RAZAO_SOCIAL")
 	private String razaoSocial;
@@ -43,6 +47,14 @@ public class Empresa {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public String getRazaoSocial() {
@@ -81,6 +93,7 @@ public class Empresa {
 	public String toString() {
 		final StringBuilder sb = new StringBuilder("Empresa{");
 		sb.append("id=").append(id);
+		sb.append(", uuid='").append(uuid).append('\'');
 		sb.append(", razaoSocial='").append(razaoSocial).append('\'');
 		sb.append(", nomeFantasia='").append(nomeFantasia).append('\'');
 		sb.append(", dataFundacao=").append(dataFundacao);
