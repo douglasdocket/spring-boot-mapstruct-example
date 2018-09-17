@@ -2,6 +2,7 @@ package com.github.douglasdocket.mapstruct.controller;
 
 import com.github.douglasdocket.mapstruct.domain.Empresa;
 import com.github.douglasdocket.mapstruct.factory.EmpresaFactory;
+import com.github.douglasdocket.mapstruct.hardcode.ParametroConstants;
 import com.github.douglasdocket.mapstruct.hardcode.Sexo;
 import com.github.douglasdocket.mapstruct.hardcode.TipoPessoa;
 import com.github.douglasdocket.mapstruct.repository.EmpresaRepository;
@@ -36,11 +37,9 @@ public class EmpresaController {
 
 	@GetMapping
 	public String home(Model model, @ModelAttribute("novaEmpresa") NovaEmpresaVO novaEmpresaVO, @RequestParam(name = "e", required = false) String empresaUUID) {
-
-
 		model.addAttribute("sexos", Sexo.values());
 		model.addAttribute("tipos", TipoPessoa.values());
-		model.addAttribute("novaEmpresa", novaEmpresaVO);
+		model.addAttribute(ParametroConstants.PARAMETRO_NOVA_EMPRESA, novaEmpresaVO);
 		model.addAttribute("empresas", empresaRepository.findAll());
 
 		if (empresaUUID != null && !"".equals(empresaUUID)) {

@@ -1,9 +1,9 @@
 package com.github.douglasdocket.mapstruct.factory;
 
-public interface Factory<InputObject, ViewObject, D> {
+public interface Factory<I, V, D> {
 
-	D fabricateFromInputObject(InputObject inputObject);
+	D fabricateFromInputObject(I i);
 
-	D fabricateFromViewObject(ViewObject viewObject);
+	D fabricateFromViewObject(V v);
 
 }

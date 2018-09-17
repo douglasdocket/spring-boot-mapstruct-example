@@ -39,7 +39,7 @@ public class Empresa {
 	private Date dataFundacao;
 
 	@OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<Pessoa> funcionarios = new HashSet<Pessoa>();
+	private Set<Pessoa> funcionarios = new HashSet<>();
 
 	public Long getId() {
 		return id;
